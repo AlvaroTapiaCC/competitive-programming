@@ -1,1 +1,3 @@
-# competitive-programming
+# Usefull Links: 
+
+´problems´: https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=210
