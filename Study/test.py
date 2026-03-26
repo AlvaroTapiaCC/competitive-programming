@@ -1,4 +1,3 @@
-def diff_len(a,b):
-    return len(str(a)) - len(str(b))
+import math
 
-print(2*(10**9))
+print(math.sqrt(2))
