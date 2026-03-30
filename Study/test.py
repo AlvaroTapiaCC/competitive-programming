@@ -1,3 +1,9 @@
-import math
+text = ""
+var1 = 1
+var2 = "hola"
 
-print(math.sqrt(2))
+text += f"{var2} como estai\n"
+text += f", hoy hice {var1}"
+text += "\n"
+
+print(text)
