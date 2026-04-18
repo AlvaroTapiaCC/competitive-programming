@@ -1,8 +1,11 @@
-dic = {}
-dic['case1'] = 10
-dic['case2'] = 20
-dic['case3'] = 30
+from bisect import bisect_right
 
-containers = [0] * 3
+def grade(score):
+    breakpoints = [60, 70, 80, 90]
+    grades = 'FDCBA'
+    i = bisect_right(breakpoints, score)
+    print(i)
+    return grades[i]
 
-print(containers)
+
+print(grade(95))
