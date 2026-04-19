@@ -1,11 +1,10 @@
-from bisect import bisect_right
 
-def grade(score):
-    breakpoints = [60, 70, 80, 90]
-    grades = 'FDCBA'
-    i = bisect_right(breakpoints, score)
-    print(i)
-    return grades[i]
+def modify_set(nums: set, n: int):
+    nums.discard(n)
 
 
-print(grade(95))
+nums = set(range(1, 6))
+
+modify_set(nums, 3)
+
+print(nums)
