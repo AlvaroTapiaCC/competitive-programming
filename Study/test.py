@@ -1,10 +1,5 @@
+num_set = set([1,2,3,4,5,6])
 
-def modify_set(nums: set, n: int):
-    nums.discard(n)
+num_set.add(6)
 
-
-nums = set(range(1, 6))
-
-modify_set(nums, 3)
-
-print(nums)
+print(num_set)
