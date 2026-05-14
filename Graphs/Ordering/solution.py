@@ -1,60 +1,95 @@
-def read_input():
-    cases = []
-    n = int(input().strip())
+import queue
 
-    for _ in range(n):
-        case = {"graph": {}, "letters_before": {}}
+class Node:
+    def __init__(self, key):
+        self.key = key
+        self.color = None
 
-        blank = input()
-        letters = input().strip().split()
-
-        for letter in letters:
-            case["graph"][letter] = set()
-            case["letters_before"][letter] = 0
-
-        constraints = input().strip().split()
-
-        for constraint in constraints:
-            a, b = constraint[0], constraint[2]
-            case["graph"][a].add(b)
-            case["letters_before"][b] += 1
-
-        cases.append(case)
-
-    return cases
-
-def map_constraints(case: dict):    
-    for constraint in case["constraints"]:
-        if constraint[1] == "<":
-            case["graph"][constraint[0]]["next"] = constraint[2]
-            case["graph"][constraint[2]]["prev"] = constraint[0]
-        else:
-            case["graph"][constraint[2]]["next"] = constraint[0]
-            case["graph"][constraint[0]]["prev"] = constraint[2]
+class Graph:
+    def __init__(self):
+        self.nodes = {}
+        self.adjacency = {}
+    
+    def add_node(self, key):
+        self.nodes[key] = Node(key)
+    
+    def add_edge(self, n1, n2):
+        self.adjacency[n1] = n2
+    
+    def get_connected_components(self):
+        for node in self.nodes:
+            if node not in self.adjacency:
+                self.adjacency[node] = []
+        components = []
+        visited = set()
+        for node in self.nodes:
+            if node not in visited:
+                component = self._dfs(node, visited)
+                components.append(component)
+        return components
+    
+    def _dfs(self, start_node, visited=None):
+        if visited is None:
+            visited = set()
+        
+        component = []
+        if start_node not in visited:
+            component.append(start_node)
+            visited.add(start_node)
+            for node in self.adjacency.get(start_node, []):
+                if node not in visited:
+                    component.extend(self._dfs(node, visited))
+        return component
+    
+    def _bfs(self, start_node):
+        visited = set()
+        q = queue.Queue()
+        q.put(start_node)
+        component = []
+        
+        while not q.empty():
+            node = q.get()
+            if node not in visited:
+                component.append(node)
+                visited.add(node)
             
-def get_initial_ordering(case: dict):
-    ordering = []
-    for letter in case["graph"].keys():
-        if case["graph"][letter]["next"] is not None and case["graph"][letter]["prev"] is None:
-            break
-    while case["graph"][letter]["next"] is not None:
-        ordering.append(letter)
-        letter = case["graph"][letter]["next"]
-    return ordering
-
-def compute_orderings(case: dict, initial_ordering: list):
-    unordered_letters = set()
-    for letter in case["graph"].keys():
-        if case["graph"][letter] not in initial_ordering:
-            unordered_letters.add(letter)
-    
-    
-
-
-def main():
-    for case in read_input():
-        compute_orderings(case)
+            for neighbor in self.adjacency.get(node, []):
+                if neighbor not in visited:
+                    visited.add(neighbor)
+                    q.put(neighbor)
         
+        return component
+
+
+class Solution:
+    def __init__(self):
+        cases = self.read_input()
+        self.solve(cases)
+    
+    def read_input(self):
+        cases = []
+        num_cases = int(input())
+        for i in range(num_cases):
+            case = {}
+            blank = input()
+            case['variables'] = input().strip().split()
+            case['constraints'] = input().strip().split()
+            cases.append(case)
+        return cases
+    
+    def solve_case(self, case):
+        case_graph = Graph()
         
+        for letter in case['variables']:
+            case_graph.add_node(letter)
+            
+        for constraint in case['constraints']:
+            case_graph.add_edge(constraint[0], constraint[2])
+        return 
+    
+    def solve(self, cases):
+        for case in cases:
+            print(self.solve_case(case))
+
 if __name__ == "__main__":
-    main()
+    solution = Solution()

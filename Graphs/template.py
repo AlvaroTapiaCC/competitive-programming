@@ -27,6 +27,7 @@ class Graph:
         for node in self.nodes:
             if node not in visited:
                 component = self._dfs(node, visited)
+                #component = self._bfs(node)
                 components.append(component)
         return components
     
@@ -72,11 +73,14 @@ class Solution:
         return cases
     
     def solve_case(self, case):
+        case_graph = Graph()
+        for var_name in case:
+            case_graph.add_node(var_name)
         return 
     
     def solve(self, cases):
         for case in cases:
-            print(self.solve_case(case))
+            print(f"{self.solve_case(case)}")
 
 if __name__ == "__main__":
     solution = Solution()
