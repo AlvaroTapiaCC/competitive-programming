@@ -62,6 +62,50 @@ class Graph:
                     q.put(neighbor)
         
         return component
+    
+    def color_dfs(self, start_node, curr_color):
+        """DFS with coloring for bipartite checking"""
+        self.nodes[start_node].color = curr_color
+        for neigh in self.adjacency.get(start_node, []):
+            if self.nodes[neigh].color is None:
+                if not self.color_dfs(neigh, 1 - curr_color):
+                    return False
+            elif self.nodes[neigh].color == curr_color:
+                return False
+        return True
+    
+    def is_bipartite(self, component):
+        """Check if a component is bipartite (2-colorable)"""
+        for node in component:
+            if self.nodes[node].color is None:
+                if not self.color_dfs(node, 0):
+                    return False
+        return True
+    
+    def get_max_(self, component):
+        """Count nodes by color in a bipartite component"""
+        color_0 = sum(1 for node in component if self.nodes[node].color == 0)
+        color_1 = len(component) - color_0
+        return max(color_0, color_1)
+    
+    def topological_sort_dfs(self, node, visited, topo_order):
+        """Helper DFS for topological sort"""
+        visited.add(node)
+        for neighbor in self.adjacency.get(node, []):
+            if neighbor not in visited:
+                self.topological_sort_dfs(neighbor, visited, topo_order)
+        topo_order.insert(0, node)
+    
+    def topological_sort(self):
+        """Returns topological ordering of nodes (for DAG)"""
+        visited = set()
+        topo_order = []
+        
+        for node in self.nodes:
+            if node not in visited:
+                self.topological_sort_dfs(node, visited, topo_order)
+        
+        return topo_order
 
 class Solution:
     def __init__(self):

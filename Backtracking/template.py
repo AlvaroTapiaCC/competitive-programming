@@ -1,27 +1,34 @@
-def read_input():
-    return
+class Solution:
+    def __init__(self):
+        cases = self.read_input()
+        for case in cases:
+            self.solve(case)
 
-def is_valid_state(state):
-    return True
+    def read_input():
+        return
 
-def get_candidates(state):
-    return []
+    def is_valid_state(state):
+        return True
 
-def search(state, solutions):
-    if is_valid_state(state):
-        solutions.append(state.copy())
-        # return
+    def get_candidates(state):
+        return []
 
-    for candidate in get_candidates(state):
-        state.add(candidate)
-        search(state, solutions)
-        state.remove(candidate)
+    def search(self, state, solutions):
+        if self.is_valid_state(state):
+            solutions.append(state.copy())
+            # return
 
-def main():
-    solutions = []
-    state = set()
-    search(state, solutions)
-    return solutions
+        for candidate in self.get_candidates(state):
+            state.add(candidate)
+            self.search(state, solutions)
+            state.remove(candidate)
+            
+    def solve(self, case):
+        solutions = []
+        state = set()
+        self.search(state, solutions)
+        return solutions
+
 
 if __name__ == "__main__":
-    main()
+    solution = Solution()
