@@ -1,44 +1,53 @@
-import functools
+import math
 
 class Solution:
     def __init__(self):
-        cases = self.read_input()
+        self.max_n = 0
+        self.max_nk = 0
+        cases = self.readInput()
+        self.dp = self.buildDP()
         self.solve(cases)
     
-    def read_input(self):
+    def readInput(self):
         cases = []
         t = int(input().strip())
         for _ in range(t):
-          case = tuple(map(int, input().strip().split()))
-          case_dict = {}
-          for i in range(case[0]):
-              case_dict[i+1] = i+1+case[1]
-          cases.append(case_dict)
+            case = tuple(map(int, input().strip().split()))
+            cases.append(case)
+            if case[0] > self.max_n:
+                self.max_n = case[0]
+            if case[0] + case[1] > self.max_nk:
+                self.max_nk = case[0] + case[1]
         return cases
     
-    def solve_case(self, case):
-        weights = [case[i] for i in sorted(case.keys())]
-        return self.minWeight(0, len(weights) - 1, tuple(weights))
+    def buildDP(self):
+        dp = [[0] * (self.max_nk + 1) for _ in range(self.max_n + 1)]
+        
+        for k in range(self.max_nk + 1):
+            dp[0][k] = 0
+            dp[1][k] = 0
+            
+        for n in range(2, self.max_n + 1):
+            for k in range(self.max_nk - n + 1):
+                best = float('inf')
+                
+                for i in range(1, n + 1):
+                    cost = (n * (k + i) + dp[i - 1][k] + dp[n - i][k + i])
+                    best = min(best, cost)
+                    
+                dp[n][k] = best
+        
+        return dp
+        
+    
+    def solveCase(self, case):
+        return self.dp[case[0]][case[1]]
     
     def solve(self, cases):
         for i, case in enumerate(cases):
-            print(f"Case {i+1}: {self.solve_case(case)}")
+            print(f"Case {i + 1}: {self.solveCase(case)}")
             #print(case)
-    
-    @functools.lru_cache(None)
-    def minWeight(self, left, right, weights):
-        if left > right:
-            return 0
-        min_weight = float('inf')
-        
-        for i in range(left, right + 1):
-            left_cost = self.minWeight(left, i - 1, weights)
-            right_cost = self.minWeight(i + 1, right, weights)
-            
-            cost = ((right - left + 1) * weights[i] + left_cost + right_cost)
-            min_weight = min(min_weight, cost)
-        
-        return min_weight
+
 
 if __name__ == "__main__":
     solution = Solution()
