@@ -25,19 +25,19 @@ class Solution:
     
     def buildDP(self, case):
         total_nums = len(case)
-        self.dp = {}
-        self.dp['max'] = [0] * total_nums
-        self.dp['min'] = [0] * total_nums
+        dp = {}
+        dp['max'] = [0] * total_nums
+        dp['min'] = [0] * total_nums
         
-        self.dp['max'][0]  = case[0]
-        self.dp['min'][0] = case[0]
+        dp['max'][0]  = case[0]
+        dp['min'][0] = case[0]
         
         total_nums = len(case)
         for i in range(1, total_nums):
-            self.dp['max'][i] = max(case[i], self.dp['max'][i-1] * case[i], self.dp['min'][i-1] * case[i])
-            self.dp['min'][i] = min(case[i], self.dp['max'][i-1] * case[i], self.dp['min'][i-1] * case[i])
+            dp['max'][i] = max(case[i], dp['max'][i-1] * case[i], dp['min'][i-1] * case[i])
+            dp['min'][i] = min(case[i], dp['max'][i-1] * case[i], dp['min'][i-1] * case[i])
             
-        return self.dp
+        return dp
     
     # def shortPathMem(self):
     #     return
