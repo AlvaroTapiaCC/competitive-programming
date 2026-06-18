@@ -1,5 +1,3 @@
-import math
-
 class Solution:
     def __init__(self):
         cases = self.readInput()
