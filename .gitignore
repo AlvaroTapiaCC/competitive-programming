@@ -3,3 +3,6 @@
 /.venv
 
 *.ipynb
+# Editor scratch files
+tempCodeRunnerFile.py
+__pycache__/
